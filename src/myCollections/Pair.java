@@ -4,6 +4,7 @@
 * nicolas.penagosm98@gmail.com
 **~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
 package myCollections ;
 
 public class Pair <F extends Comparable<F>,S> implements Comparable<Pair<F,S>>{

@@ -4,11 +4,15 @@
 * nicolas.penagosm98@gmail.com
 **~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
 package ui;
 
+import externalThreads.IntroThread;
 import model.BoardGame;
+import model.Chronometer;
 import model.Square;
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class SnakeGame extends PApplet{
 	
@@ -16,6 +20,15 @@ public class SnakeGame extends PApplet{
 	// Atributtes
 	// -------------------------------------
 	private BoardGame boardGame;
+	private PImage title;
+	private PImage instructions;
+	private PImage _3;
+	private PImage _2;
+	private PImage _1;
+	private PImage increaseDifficulty;
+	private IntroThread introThread;
+	private Chronometer chronometer;
+
 
 	// -------------------------------------
 	// Main Method
@@ -32,12 +45,25 @@ public class SnakeGame extends PApplet{
 	public void settings() {
 
 		size(600, 600);
-	
-
+		
 	}
 	
 	public void setup() {
+		
 		boardGame = new BoardGame();
+		instructions = loadImage("instImage.png");
+		title = loadImage("titleImage.png");
+		_3 =  loadImage("3.png");
+		_2 =  loadImage("2.png");
+		_1 =  loadImage("1.png");
+		increaseDifficulty = loadImage("incDifficulty.png"); 
+		
+		introThread = new IntroThread(boardGame);
+		introThread.setDaemon(true);
+		introThread.start();
+		
+		chronometer = new Chronometer();
+		
 	}
 	
 	public void draw() {
@@ -49,7 +75,7 @@ public class SnakeGame extends PApplet{
 				
 				Square sq = boardGameMatrix[i][j];
 				
-				noStroke();
+				
 				if(sq.getCurrentColor()==Square.BLACK) {
 					fill(0,0,0);
 				}else if(sq.getCurrentColor()==Square.DARK_GRAY) {
@@ -65,14 +91,37 @@ public class SnakeGame extends PApplet{
 				rect(sq.getPosX(), sq.getPosY(), sq.getSize(), sq.getSize());
 			}
 		}
+		
+		if(boardGame.isBtitle()) {
+			image(title, 0, 0);
+		}
+		
+		if(boardGame.isBinstructions()) {
+			image(instructions, 0, 0);
+		}
+		
+		if(boardGame.isB3()) {
+			image(_3, 0, 0);
+		}
+		
+		if(boardGame.isB2()) {
+			image(_2, 0, 0);
+		}
+		
+		if(boardGame.isB1()) {
+			image(_1, 0, 0);
+		}
+		
+		if(boardGame.isIncreaseDifficulty()) {
+			image(increaseDifficulty, 0, 0);
+		}
+		
+		
+		
+	
+	
 	}
 	
-	public void mousePressed() {
-		
-		boardGame.setMove(true);
-		new Thread(boardGame).start();
-		
-	}
 	
 	public void keyPressed() {
 		
