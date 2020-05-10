@@ -7,7 +7,7 @@
 
 package myCollections ;
 
-public class Pair <F extends Comparable<F>,S> implements Comparable<Pair<F,S>>{
+public class Pair <F extends Comparable<F>,S extends Comparable<F>> implements Comparable<Pair<F,S>>{
 	
 	private F first;
 	private S second;
@@ -47,12 +47,10 @@ public class Pair <F extends Comparable<F>,S> implements Comparable<Pair<F,S>>{
 
 	@Override
 	public int compareTo(Pair<F, S> p) {
-		if(first.compareTo(p.getFirst())>0) {
-			return 1;
-		}else if(first.compareTo(p.getFirst())<0) {
-			return -1;
-		}else {
+		if(first.compareTo(p.getFirst())==0&&second.compareTo((F) p.getSecond())==0) {
 			return 0;
+		}else {
+			return 1;
 		}
 	}
 

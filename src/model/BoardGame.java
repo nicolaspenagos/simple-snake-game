@@ -29,6 +29,9 @@ public class BoardGame implements Runnable {
 	private boolean b2;
 	private boolean b1;
 	private boolean increaseDifficulty;
+	private boolean mouse;
+	private int kills;
+	private Pair<Integer, Integer> enemy;
 
 	// -------------------------------------
 	// Constructor
@@ -41,6 +44,7 @@ public class BoardGame implements Runnable {
 		snake = new LinkedList<Pair<Integer, Integer>>();
 		snake.offer(new Pair<Integer, Integer>(14, 14));
 		snake.offer(new Pair<Integer, Integer>(13, 14));
+		kills = 0;
 		
 		loadBoardGame();
 		btitle = false;
@@ -48,7 +52,8 @@ public class BoardGame implements Runnable {
 		b3 = false;
 		b2 = false;
 		b1 = false;
-		setIncreaseDifficulty(false);
+		mouse = false;
+		increaseDifficulty = false;
 		
 		direction = Square.RIGHT;
 
@@ -105,7 +110,7 @@ public class BoardGame implements Runnable {
 			while (move) {
 
 				toMove();
-				Thread.sleep(300);
+				Thread.sleep(250);
 			}
 
 		} catch (InterruptedException e) {
@@ -246,5 +251,13 @@ public class BoardGame implements Runnable {
 
 	public void setIncreaseDifficulty(boolean increaseDifficulty) {
 		this.increaseDifficulty = increaseDifficulty;
+	}
+
+	public boolean isMouse() {
+		return mouse;
+	}
+
+	public void setMouse(boolean mouse) {
+		this.mouse = mouse;
 	}
 }

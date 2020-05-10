@@ -12,6 +12,7 @@ import model.BoardGame;
 import model.Chronometer;
 import model.Square;
 import processing.core.PApplet;
+import processing.core.PFont;
 import processing.core.PImage;
 
 public class SnakeGame extends PApplet{
@@ -26,6 +27,8 @@ public class SnakeGame extends PApplet{
 	private PImage _2;
 	private PImage _1;
 	private PImage increaseDifficulty;
+	private PImage mouse;
+	private PFont camingoCode;
 	private IntroThread introThread;
 	private Chronometer chronometer;
 
@@ -57,12 +60,15 @@ public class SnakeGame extends PApplet{
 		_2 =  loadImage("2.png");
 		_1 =  loadImage("1.png");
 		increaseDifficulty = loadImage("incDifficulty.png"); 
-		
-		introThread = new IntroThread(boardGame);
+		mouse = loadImage("mouse.png");
+		camingoCode = loadFont("CamingoCode-Bold-22.vlw");
+		chronometer = new Chronometer();
+		introThread = new IntroThread(boardGame, chronometer);
 		introThread.setDaemon(true);
 		introThread.start();
 		
-		chronometer = new Chronometer();
+	
+		
 		
 	}
 	
@@ -116,7 +122,14 @@ public class SnakeGame extends PApplet{
 			image(increaseDifficulty, 0, 0);
 		}
 		
+		if(boardGame.isMouse()) {
+			image(mouse, 17, 19);
+		}
 		
+		fill(255);
+		textSize(32);
+		textFont(camingoCode);
+		text(chronometer.getTime(), 498, 38);
 		
 	
 	

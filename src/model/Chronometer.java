@@ -7,13 +7,17 @@
 
 package model;
 
+import externalThreads.ChronometerThread;
+
 public class Chronometer {
+	
 	//-------------------------------------
 	// Atributtes 
 	//-------------------------------------
 	private int min;
 	private int sec;
 	private String time;
+	private ChronometerThread chronometerThread;
 	
 	//-------------------------------------
 	// Constructor
@@ -26,12 +30,31 @@ public class Chronometer {
 		
 	}
 	
+	// -------------------------------------
+	// Methods
+	// -------------------------------------
+	public void startThread() {
+		
+		chronometerThread = new ChronometerThread(this);
+		chronometerThread.setDaemon(true);
+		chronometerThread.start();
+		
+	}
+	
 	public void changeTime(String time) {
 		this.time=time;
 	}
+	
 	public String getTime() {
 		return time;
 	}
+	
+	public String toString() {
+		
+		return min + " " + sec;
+				
+	}
+
 	
 	
 }

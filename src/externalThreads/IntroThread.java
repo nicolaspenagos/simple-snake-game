@@ -8,6 +8,7 @@
 package externalThreads;
 
 import model.BoardGame;
+import model.Chronometer;
 
 public class IntroThread extends Thread{
 	
@@ -15,12 +16,16 @@ public class IntroThread extends Thread{
 	// Atributtes
 	// -------------------------------------
 	private BoardGame boardGame;
+	private Chronometer chronometer;
 	
 	// -------------------------------------
 	// Constructor
 	// -------------------------------------
-	public IntroThread(BoardGame boardGame) {
-		this.boardGame = boardGame;
+	public IntroThread(BoardGame boardGame,Chronometer chronometer) {
+		
+		this.boardGame  = boardGame;
+		this.chronometer = chronometer;
+		
 	}
 	
 	// -------------------------------------
@@ -48,8 +53,9 @@ public class IntroThread extends Thread{
 			boardGame.setB1(false);
 			boardGame.setIncreaseDifficulty(true);
 			boardGame.setMove(true);
-			
+			boardGame.setMouse(true);
 			new Thread(boardGame).start();
+			chronometer.startThread();
 			sleep(8000);
 			boardGame.setIncreaseDifficulty(false);
 			
