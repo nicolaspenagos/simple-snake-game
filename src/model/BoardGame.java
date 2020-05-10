@@ -28,6 +28,7 @@ public class BoardGame implements Runnable {
 
 		snake = new ArrayList<Pair<Integer, Integer>>();
 		snake.add(new Pair<Integer, Integer>(14, 13));
+		//snake.add(new Pair<Integer, Integer>(14, 12));
 	
 		boardGame = new Square[30][30];
 		move = false;
@@ -106,9 +107,13 @@ public class BoardGame implements Runnable {
 				int i = snake.get(index).getFirst();
 				int j = snake.get(index).getSecond();
 				
+			
 				Square sq = boardGame[i][j];
-				sq.setSnake(false);
-				System.out.println(sq.getDirection());
+				char currentDirection = sq.getDirection();
+				char currentColor = sq.getCurrentColor();
+				if(index+1==snake.size())
+					sq.setSnake(false);
+				
 				switch(sq.getDirection()) {
 					
 					case Square.UP: 
@@ -120,11 +125,11 @@ public class BoardGame implements Runnable {
 						break;
 						
 					case Square.LEFT: 
-						i++;
+						i--;
 						break;
 						
 					case Square.RIGHT:
-						i--;
+						i++;
 						break;
 						
 				}
@@ -132,6 +137,8 @@ public class BoardGame implements Runnable {
 				if(-1<i && i<boardGame.length && -1<j && j<boardGame[0].length) {
 					
 					boardGame[i][j].setSnake(true);
+					boardGame[i][j].setDirection(currentDirection);
+					boardGame[i][j].setCurrentColor(currentColor);
 					snake.get(index).setFirst(i);
 					snake.get(index).setSecond(j);
 					
@@ -146,7 +153,7 @@ public class BoardGame implements Runnable {
 	}
 	
 	public void changeDirection(char direction) {
-		
+	
 		this.direction = direction;
 		Square sq = boardGame[snake.get(0).getFirst()][snake.get(0).getSecond()];
 		sq.setDirection(direction);

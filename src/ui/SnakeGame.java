@@ -53,7 +53,7 @@ public class SnakeGame extends PApplet{
 				if(sq.getCurrentColor()==Square.BLACK) {
 					fill(0,0,0);
 				}else if(sq.getCurrentColor()==Square.DARK_GRAY) {
-					fill(41,41,41);
+					fill(28,28,28);
 				}else if(sq.getCurrentColor()==Square.GREEN) {
 					fill(228,255,41);
 				}else if(sq.getCurrentColor()==Square.DARK_GREEN){

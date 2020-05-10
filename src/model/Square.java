@@ -19,7 +19,7 @@ public class Square{
 	public final static char UP = 'u';
 	public final static char DOWN = 'd';
 	public final static char LEFT = 'l';
-	public final static char RIGHT = 'R';
+	public final static char RIGHT = 'r';
 
 	// -------------------------------------
 	// Atributtes
