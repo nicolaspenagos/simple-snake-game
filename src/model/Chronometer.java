@@ -14,8 +14,6 @@ public class Chronometer {
 	//-------------------------------------
 	// Atributtes 
 	//-------------------------------------
-	private int min;
-	private int sec;
 	private String time;
 	private ChronometerThread chronometerThread;
 	
@@ -24,8 +22,6 @@ public class Chronometer {
 	//-------------------------------------
 	public Chronometer() {
 		
-		int min=0;
-		int sec=0;
 		time="";
 		
 	}
@@ -45,16 +41,13 @@ public class Chronometer {
 		this.time=time;
 	}
 	
+	// -------------------------------------
+	// Getters and Setters
+	// -------------------------------------
+		
 	public String getTime() {
 		return time;
 	}
-	
-	public String toString() {
 		
-		return min + " " + sec;
-				
-	}
-
-	
 	
 }

@@ -7,7 +7,10 @@
 
 package model;
 
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -31,7 +34,11 @@ public class BoardGame implements Runnable {
 	private boolean increaseDifficulty;
 	private boolean mouse;
 	private int kills;
-	private Pair<Integer, Integer> enemy;
+	private long speed;
+	private boolean go;
+	private int difficulty;
+	private String gameTime;
+	private Score score;
 
 	// -------------------------------------
 	// Constructor
@@ -45,7 +52,7 @@ public class BoardGame implements Runnable {
 		snake.offer(new Pair<Integer, Integer>(14, 14));
 		snake.offer(new Pair<Integer, Integer>(13, 14));
 		kills = 0;
-		
+
 		loadBoardGame();
 		btitle = false;
 		binstructions = false;
@@ -54,8 +61,16 @@ public class BoardGame implements Runnable {
 		b1 = false;
 		mouse = false;
 		increaseDifficulty = false;
-		
+
 		direction = Square.RIGHT;
+		setEnemy();
+		speed = 300;
+
+		go = false;
+		difficulty = 1;
+		gameOver = false;
+		
+		loadScore();
 
 	}
 
@@ -102,6 +117,20 @@ public class BoardGame implements Runnable {
 
 	}
 
+	public void increaseSpeed() {
+
+		if (difficulty < 4) {
+			difficulty++;
+		}
+
+		if (difficulty == 2) {
+			speed = 150;
+		} else if (difficulty == 3) {
+			speed = 75;
+		}
+
+	}
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -110,7 +139,7 @@ public class BoardGame implements Runnable {
 			while (move) {
 
 				toMove();
-				Thread.sleep(250);
+				Thread.sleep(speed);
 			}
 
 		} catch (InterruptedException e) {
@@ -121,14 +150,15 @@ public class BoardGame implements Runnable {
 	}
 
 	public void toMove() {
-		
-		Queue<Pair<Integer, Integer>> temp = new LinkedList<Pair<Integer, Integer>>();
-		
-		Pair<Integer, Integer> p =  snake.peek();
-		int i = p.getFirst();
-		int j = p.getSecond();
-		
-		switch (direction) {
+
+		try {
+			Queue<Pair<Integer, Integer>> temp = new LinkedList<Pair<Integer, Integer>>();
+
+			Pair<Integer, Integer> p = snake.peek();
+			int i = p.getFirst();
+			int j = p.getSecond();
+
+			switch (direction) {
 
 			case Square.UP:
 				j--;
@@ -146,33 +176,119 @@ public class BoardGame implements Runnable {
 				i++;
 				break;
 
-		}
-		
-		temp.offer(new Pair<Integer, Integer>(i,j));
-		
-		while(snake.size()>1) {
-			p =  snake.poll();
-			temp.offer(p);
-		}
-		
-		p = snake.poll();
-		i = p.getFirst();
-		j = p.getSecond();
-		boardGame[i][j].setSnake(false);
-		
-		snake = temp;
-		
-		for (Pair<Integer, Integer> pair : snake) {
-			i = pair.getFirst();
-			j = pair.getSecond();
+			}
 
-			boardGame[i][j].setSnake(true);
+			int limit = 1;
+
+			if (boardGame[i][j].getCurrentColor() == Square.RED) {
+
+				limit = 0;
+				kills++;
+				setEnemy();
+
+			}else if(boardGame[i][j].getCurrentColor() == Square.GREEN) {
+				
+				gameOver = true;
+				move = false;
+				
+			}
+
+			temp.offer(new Pair<Integer, Integer>(i, j));
+
+			int tailI = 0;
+			int tailJ = 0;
+
+			while (snake.size() > limit) {
+
+				p = snake.poll();
+				temp.offer(p);
+				tailI = p.getFirst();
+				tailJ = p.getSecond();
+
+			}
+
+			if (!snake.isEmpty()) {
+
+				p = snake.poll();
+				i = p.getFirst();
+				j = p.getSecond();
+				boardGame[i][j].setSnake(false);
+
+			} else {
+				if (tailI < 29 && tailI > -2 && tailJ < 29 && tailJ > -2) {
+
+					if (direction == Square.UP) {
+						tailJ++;
+						boardGame[tailI][tailJ].setSnake(false);
+					} else if (direction == Square.DOWN) {
+						tailJ--;
+						boardGame[tailI][tailJ].setSnake(false);
+					} else if (direction == Square.RIGHT) {
+						tailI--;
+						boardGame[tailI][tailJ].setSnake(false);
+					} else {
+						tailI++;
+						boardGame[tailI][tailJ].setSnake(false);
+					}
+
+				}
+
+			}
+
+			snake = temp;
+
+			for (Pair<Integer, Integer> pair : snake) {
+				i = pair.getFirst();
+				j = pair.getSecond();
+
+				boardGame[i][j].setSnake(true);
+			}
+
+			p = snake.peek();
+			i = p.getFirst();
+			j = p.getSecond();
+			boardGame[i][j].setCurrentColor(Square.DARK_GREEN);
+
+		} catch (IndexOutOfBoundsException e) {
+			
+			gameOver = true;
+			
 		}
-		
-		p = snake.peek();
-		i = p.getFirst();
-		j = p.getSecond();
-		boardGame[i][j].setCurrentColor(Square.DARK_GREEN);
+
+	}
+
+	public boolean snakeContains(Pair<Integer, Integer> enemy) {
+
+		boolean contains = false;
+
+		for (Pair<Integer, Integer> pair : snake) {
+
+			if (pair.compareTo(enemy) == 0)
+				contains = true;
+
+		}
+
+		return contains;
+
+	}
+
+	public void setEnemy() {
+
+		boolean contains = true;
+
+		while (contains) {
+
+			int i = 0 + (int) (Math.random() * 30);
+			int j = 0 + (int) (Math.random() * 30);
+
+			Pair<Integer, Integer> enemy = new Pair<Integer, Integer>(i, j);
+
+			contains = snakeContains(enemy);
+
+			if (!contains) {
+				boardGame[i][j].setCurrentColor(Square.RED);
+			}
+		}
 
 	}
 
@@ -182,9 +298,46 @@ public class BoardGame implements Runnable {
 
 	}
 
+	public String toStringKills() {
+
+		String _kills = "";
+		if (kills > 0) {
+			_kills += kills;
+		}
+
+		return _kills;
+
+	}
+	
+	public void loadScore() {
+		
+		File file = new File(Score.PATH);
+		
+		if(file.exists()) {
+			  try {
+					ObjectInputStream io=new  ObjectInputStream(new FileInputStream(file));
+					score=(Score) io.readObject();
+					io.close();
+				   } catch (IOException e) {
+					   // TODO Auto-generated catch block
+					   e.printStackTrace();
+				   } catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				   }
+		}
+		
+	}
+	
+	public void saveScore() {
+		
+	}
+	
+
 	// -------------------------------------
 	// Getters and Setters
 	// -------------------------------------
+	
 	public Square[][] getBoardGame() {
 		return boardGame;
 	}
@@ -260,4 +413,33 @@ public class BoardGame implements Runnable {
 	public void setMouse(boolean mouse) {
 		this.mouse = mouse;
 	}
+
+	public long getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(long speed) {
+		this.speed = speed;
+	}
+
+	public void setGo(boolean go) {
+		this.go = go;
+	}
+
+	public boolean getGo() {
+		return go;
+	}
+
+	public String getGameTime() {
+		return gameTime;
+	}
+
+	public void setGameTime(String gameTime) {
+		this.gameTime = gameTime;
+	}
+	
+	public int getKills() {
+		return kills;
+	}
+	
 }

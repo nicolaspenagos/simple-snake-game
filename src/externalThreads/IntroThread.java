@@ -54,6 +54,7 @@ public class IntroThread extends Thread{
 			boardGame.setIncreaseDifficulty(true);
 			boardGame.setMove(true);
 			boardGame.setMouse(true);
+			boardGame.setGo(true);
 			new Thread(boardGame).start();
 			chronometer.startThread();
 			sleep(8000);
