@@ -11,7 +11,6 @@ import externalThreads.IntroThread;
 import model.BoardGame;
 import model.Chronometer;
 import model.Square;
-import myCollections.Pair;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
@@ -30,7 +29,7 @@ public class SnakeGame extends PApplet {
 	private PImage increaseDifficulty;
 	private PImage mouse;
 	private PImage gameOver;
-	private PImage gameOverWithOutRecord;
+	private PImage newRecord;
 	private PFont camingoCode;
 	private IntroThread introThread;
 	private Chronometer chronometer;
@@ -61,19 +60,17 @@ public class SnakeGame extends PApplet {
 		_3 = loadImage("3.png");
 		_2 = loadImage("2.png");
 		_1 = loadImage("1.png");
-		increaseDifficulty = loadImage("incDifficulty.png");
+		increaseDifficulty = loadImage("incDifficulty-01.png");
 		mouse = loadImage("mouse.png");
 		gameOver = loadImage("gameOverImage.png");
 		camingoCode = loadFont("CamingoCode-Bold-22.vlw");
-		gameOverWithOutRecord = loadImage("GameOverWithOutRecord.png");
+		newRecord = loadImage("newRecord.png");
 		chronometer = new Chronometer();
 		introThread = new IntroThread(boardGame, chronometer);
 		introThread.setDaemon(true);
 		introThread.start();
-		int i = 0 + (int) (Math.random() * 30);
-		int j = 0 + (int) (Math.random() * 30);
 		stop = false;
-		Pair<Integer, Integer> enemy = new Pair<Integer, Integer>(i, j);
+	
 
 	}
 
@@ -172,20 +169,32 @@ public class SnakeGame extends PApplet {
 			
 		}else {
 			
-			image(gameOver, 0, 0);
+			fill(255);
+			textSize(32);
+			textFont(camingoCode);
+			
+			if(boardGame.isFirstTime() || boardGame.isUpdate()) {
+				image(newRecord, 0, 0);
+			}else {
+				
+				image(gameOver, 0, 0);
+		
+			}
+			
 			
 			if(!stop) {
 				
 				stop = true;
 				boardGame.setGameTime(chronometer.getTime());
+				boardGame.saveScore();
 				
 			}
 			
-			fill(255);
-			textSize(32);
-			textFont(camingoCode);
+			
 			text(boardGame.getKills()+"  "+boardGame.getGameTime(), 303, 340);
-			 
+			
+			if(!boardGame.isFirstTime() && !boardGame.isUpdate())
+				text(boardGame.getScore().getRecordKills()+"  "+boardGame.getScore().record(), 312, 377);
 		}
 		
 		

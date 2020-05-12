@@ -21,6 +21,7 @@ public class Score implements Serializable{
 	//-------------------------------------
 	private boolean empty;
 	private Time record;
+	private int recordKills;
 
 	
 	//-------------------------------------
@@ -28,9 +29,12 @@ public class Score implements Serializable{
 	//-------------------------------------
 	public Score() {
 		empty=true;
+		recordKills = 0;
 	}
 	
-	private void update(String time) {
+	public boolean update(String time, int kills) {
+		
+		boolean updte = false;
 		
 		String[] parts = time.split(":");
 		int minutes = Integer.parseInt(parts[0]);
@@ -38,21 +42,41 @@ public class Score implements Serializable{
 		int centiSeconds = Integer.parseInt(parts[1]);
 		
 		Time tempTime = new Time(minutes, seconds, centiSeconds);
+	
 		
 		if(empty) {
+			
 			record = tempTime;
-		}else {
-			if(tempTime.timeCompareTo(record)==-1) {
+			recordKills = kills;
+			empty = false;
+			updte = true;
+			
+		}else{
+						
+			if(kills > recordKills) {
+				
+				recordKills = kills;
 				record = tempTime;
+				updte = true;
+				
+			}else if(kills == recordKills) {
+				
+				if(tempTime.timeCompareTo(record)==-1) {
+					record = tempTime;
+					updte = true;
+				}
+				
 			}
+
 		}
+		
+		return updte;
 		
 	}
 	
-	private String record() {
+	public String record() {
 		
-		String time = "";
-		
+
 		int i = record.getMinutes();
 		int j = record.getSeconds();
 		int k = record.getCentiSeconds();
@@ -84,6 +108,10 @@ public class Score implements Serializable{
 
 	public void setRecord(Time record) {
 		this.record = record;
+	}
+	
+	public int getRecordKills() {
+		return recordKills;
 	}
 
 

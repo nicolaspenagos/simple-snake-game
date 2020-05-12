@@ -9,8 +9,10 @@ package model;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -39,6 +41,9 @@ public class BoardGame implements Runnable {
 	private int difficulty;
 	private String gameTime;
 	private Score score;
+	private boolean update;
+	private boolean gameEnded;
+	private boolean firstTime;
 
 	// -------------------------------------
 	// Constructor
@@ -69,6 +74,8 @@ public class BoardGame implements Runnable {
 		go = false;
 		difficulty = 1;
 		gameOver = false;
+		gameEnded = false;
+		firstTime = true;
 		
 		loadScore();
 
@@ -150,11 +157,13 @@ public class BoardGame implements Runnable {
 	}
 
 	public void toMove() {
-
+		System.out.println("");
+		System.out.println(snake.size()+" F");
 		try {
 			Queue<Pair<Integer, Integer>> temp = new LinkedList<Pair<Integer, Integer>>();
 
 			Pair<Integer, Integer> p = snake.peek();
+			
 			int i = p.getFirst();
 			int j = p.getSecond();
 
@@ -236,7 +245,7 @@ public class BoardGame implements Runnable {
 			}
 
 			snake = temp;
-
+			System.out.println(snake.size()+" S");
 			for (Pair<Integer, Integer> pair : snake) {
 				i = pair.getFirst();
 				j = pair.getSecond();
@@ -252,6 +261,12 @@ public class BoardGame implements Runnable {
 		} catch (IndexOutOfBoundsException e) {
 			
 			gameOver = true;
+			
+		}
+		
+		if(gameOver && !gameEnded) {
+	
+			gameEnded = true;
 			
 		}
 
@@ -293,8 +308,17 @@ public class BoardGame implements Runnable {
 	}
 
 	public void changeDirection(char direction) {
-
-		this.direction = direction;
+		
+		if(this.direction == Square.UP && direction != Square.DOWN && direction != Square.UP) {
+			this.direction = direction;
+		}else if(this.direction == Square.DOWN && direction != Square.UP && direction != Square.DOWN) {
+			this.direction = direction;
+		}else if(this.direction == Square.RIGHT && direction != Square.LEFT && direction != Square.RIGHT) {
+			this.direction = direction;
+		}else if(this.direction == Square.LEFT && direction != Square.RIGHT && direction != Square.LEFT ) {
+			this.direction = direction;
+		}
+	
 
 	}
 
@@ -314,6 +338,9 @@ public class BoardGame implements Runnable {
 		File file = new File(Score.PATH);
 		
 		if(file.exists()) {
+			
+				firstTime = false;
+				
 			  try {
 					ObjectInputStream io=new  ObjectInputStream(new FileInputStream(file));
 					score=(Score) io.readObject();
@@ -325,12 +352,27 @@ public class BoardGame implements Runnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				   }
+		}else {
+			score = new Score();
+			firstTime = true;
 		}
 		
 	}
 	
 	public void saveScore() {
 		
+		update = score.update(gameTime, kills);
+		
+		try {
+			
+			ObjectOutputStream io = new ObjectOutputStream(new FileOutputStream(new File(Score.PATH)));
+			io.writeObject(score);
+			io.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -440,6 +482,26 @@ public class BoardGame implements Runnable {
 	
 	public int getKills() {
 		return kills;
+	}
+
+	public boolean isFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(boolean firstTime) {
+		this.firstTime = firstTime;
+	}
+	
+	public Score getScore() {
+		return score;
+	}
+
+	public boolean isUpdate() {
+		return update;
+	}
+
+	public void setUpdate(boolean update) {
+		this.update = update;
 	}
 	
 }
