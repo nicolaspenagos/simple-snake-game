@@ -55,7 +55,6 @@ public class BoardGame implements Runnable {
 		setGameOver(false);
 		snake = new LinkedList<Pair<Integer, Integer>>();
 		snake.offer(new Pair<Integer, Integer>(14, 14));
-		snake.offer(new Pair<Integer, Integer>(13, 14));
 		kills = 0;
 
 		loadBoardGame();
@@ -69,7 +68,7 @@ public class BoardGame implements Runnable {
 
 		direction = Square.RIGHT;
 		setEnemy();
-		speed = 300;
+		speed = 225;
 
 		go = false;
 		difficulty = 1;
@@ -131,7 +130,7 @@ public class BoardGame implements Runnable {
 		}
 
 		if (difficulty == 2) {
-			speed = 150;
+			speed = 125;
 		} else if (difficulty == 3) {
 			speed = 75;
 		}
@@ -157,8 +156,8 @@ public class BoardGame implements Runnable {
 	}
 
 	public void toMove() {
-		System.out.println("");
-		System.out.println(snake.size()+" F");
+		
+	
 		try {
 			Queue<Pair<Integer, Integer>> temp = new LinkedList<Pair<Integer, Integer>>();
 
@@ -166,7 +165,7 @@ public class BoardGame implements Runnable {
 			
 			int i = p.getFirst();
 			int j = p.getSecond();
-
+			
 			switch (direction) {
 
 			case Square.UP:
@@ -215,7 +214,7 @@ public class BoardGame implements Runnable {
 				tailJ = p.getSecond();
 
 			}
-
+	
 			if (!snake.isEmpty()) {
 
 				p = snake.poll();
@@ -224,8 +223,8 @@ public class BoardGame implements Runnable {
 				boardGame[i][j].setSnake(false);
 
 			} else {
-				if (tailI < 29 && tailI > -2 && tailJ < 29 && tailJ > -2) {
-
+				if (tailI < 29 && tailI > 0 && tailJ < 29 && tailJ > 0) {
+					
 					if (direction == Square.UP) {
 						tailJ++;
 						boardGame[tailI][tailJ].setSnake(false);
@@ -243,9 +242,9 @@ public class BoardGame implements Runnable {
 				}
 
 			}
-
+		
 			snake = temp;
-			System.out.println(snake.size()+" S");
+			
 			for (Pair<Integer, Integer> pair : snake) {
 				i = pair.getFirst();
 				j = pair.getSecond();
@@ -256,17 +255,21 @@ public class BoardGame implements Runnable {
 			p = snake.peek();
 			i = p.getFirst();
 			j = p.getSecond();
+	
 			boardGame[i][j].setCurrentColor(Square.DARK_GREEN);
 
 		} catch (IndexOutOfBoundsException e) {
 			
+			System.out.println("IndexOutOfBoundsException");
 			gameOver = true;
+			move = false;
 			
 		}
 		
 		if(gameOver && !gameEnded) {
 	
 			gameEnded = true;
+			move = false;
 			
 		}
 
