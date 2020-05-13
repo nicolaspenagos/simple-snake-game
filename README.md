@@ -1,5 +1,5 @@
 ﻿# simple-snake-game
-As a hobby, I presented a simple implementation of the classic Snake video game inspired by the pre-recorded version on Nokia phones in the earliest 2000.
+As a hobby, I present a simple implementation of the classic Snake video game inspired by the pre-recorded version on Nokia phones in the earliest 2000.
 
 
 ## Made by
