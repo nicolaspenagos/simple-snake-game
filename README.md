@@ -10,3 +10,5 @@ As a hobby, I present a simple implementation of the classic Snake video game in
 
 ## Important Information 
 For the implementation of this project, I have used Proccessing technology, for this reason, I will ask you to manually add the external JAR. Below you will find the instructions to do so using Eclipse.
+
+![](readmeImages/Core_jar_Tuto-01.jpg)
