@@ -260,7 +260,6 @@ public class BoardGame implements Runnable {
 
 		} catch (IndexOutOfBoundsException e) {
 			
-			System.out.println("IndexOutOfBoundsException");
 			gameOver = true;
 			move = false;
 			
