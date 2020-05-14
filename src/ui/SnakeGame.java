@@ -60,7 +60,7 @@ public class SnakeGame extends PApplet {
 		_3 = loadImage("3.png");
 		_2 = loadImage("2.png");
 		_1 = loadImage("1.png");
-		increaseDifficulty = loadImage("incDifficulty-01.png");
+		increaseDifficulty = loadImage("incDifficulty.png");
 		mouse = loadImage("mouse.png");
 		gameOver = loadImage("gameOverImage.png");
 		camingoCode = loadFont("CamingoCode-Bold-22.vlw");
