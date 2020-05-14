@@ -1,6 +1,7 @@
 ﻿# simple-snake-game
 As a hobby, I present a simple implementation of the classic Snake video game inspired by the pre-recorded versions on Nokia phones in the earliest 2000.
 
+![](readmeImages/Snake-01.jpg)
 
 ## Made by
   <ul>
