@@ -16,7 +16,13 @@ import processing.core.PFont;
 import processing.core.PImage;
 
 public class SnakeGame extends PApplet {
-
+	
+	// -------------------------------------
+	// Constants
+	// -------------------------------------
+	public final static int GAME_OVER = 1;
+	public final static int NEW_RECORD = 2;
+	
 	// -------------------------------------
 	// Atributtes
 	// -------------------------------------
@@ -34,12 +40,14 @@ public class SnakeGame extends PApplet {
 	private IntroThread introThread;
 	private Chronometer chronometer;
 	private boolean stop;
-
+	private int _case;
+	private static int gamesInThisSesion;
 	// -------------------------------------
 	// Main Method
 	// -------------------------------------
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		gamesInThisSesion = 0;
 		PApplet.main("ui.SnakeGame");
 	}
 
@@ -53,8 +61,9 @@ public class SnakeGame extends PApplet {
 	}
 
 	public void setup() {
-
-		boardGame = new BoardGame();
+		
+		gamesInThisSesion++;
+		boardGame = new BoardGame(gamesInThisSesion);
 		instructions = loadImage("instImage.png");
 		title = loadImage("titleImage.png");
 		_3 = loadImage("3.png");
@@ -62,7 +71,7 @@ public class SnakeGame extends PApplet {
 		_1 = loadImage("1.png");
 		increaseDifficulty = loadImage("incDifficulty.png");
 		mouse = loadImage("mouse.png");
-		gameOver = loadImage("gameOverImage.png");
+		gameOver = loadImage("gameOver.png");
 		camingoCode = loadFont("CamingoCode-Bold-22.vlw");
 		newRecord = loadImage("newRecord.png");
 		chronometer = new Chronometer();
@@ -70,6 +79,7 @@ public class SnakeGame extends PApplet {
 		introThread.setDaemon(true);
 		introThread.start();
 		stop = false;
+		_case = 0;
 	
 
 	}
@@ -174,10 +184,14 @@ public class SnakeGame extends PApplet {
 			textFont(camingoCode);
 			
 			if(boardGame.isFirstTime() || boardGame.isUpdate()) {
+				
 				image(newRecord, 0, 0);
+				_case = NEW_RECORD;
+				
 			}else {
 				
 				image(gameOver, 0, 0);
+				_case = GAME_OVER;
 		
 			}
 			
@@ -191,18 +205,46 @@ public class SnakeGame extends PApplet {
 			}
 			
 			
-			text(boardGame.getKills()+"  "+boardGame.getGameTime(), 303, 340);
+			text(boardGame.getKills()+"  "+boardGame.getGameTime(), 303, 302);
 			
 			if(!boardGame.isFirstTime() && !boardGame.isUpdate())
-				text(boardGame.getScore().getRecordKills()+"  "+boardGame.getScore().record(), 312, 377);
+				text(boardGame.getScore().getRecordKills()+"  "+boardGame.getScore().record(), 312, 339);
+		}
+		
+	}
+	
+	public void mousePressed() {
+		
+		if(_case != 0) {
+			int pAxI = 168;
+			int pAxF = 288;
+			
+			int eXi = 308;
+			int eXf = 428;
+			
+			int yI = 403;
+			int yF = 448;
+			
+			if(_case == NEW_RECORD) {
+				yI = yI - 20;
+				yF = yF - 20;
+			}
+			
+			if(mouseX >= pAxI && mouseX <= pAxF && mouseY >= yI  && mouseY <= yF) {
+				setup();
+			}else if(mouseX >= eXi && mouseX <= eXf && mouseY >= yI  && mouseY <= yF) {
+				exit();
+			}
+	
 		}
 		
 		
-
+		
+		
 	}
 
 	public void keyPressed() {
-
+		
 		switch (keyCode) {
 
 		case 65:
@@ -232,7 +274,7 @@ public class SnakeGame extends PApplet {
 			
 		case 32:
 			boardGame.increaseSpeed();
-			break;
+			break;	
 
 		}
 	}

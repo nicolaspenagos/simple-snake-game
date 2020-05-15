@@ -44,12 +44,14 @@ public class BoardGame implements Runnable {
 	private boolean update;
 	private boolean gameEnded;
 	private boolean firstTime;
+	private int gamesInThisSesion;
 
 	// -------------------------------------
 	// Constructor
 	// -------------------------------------
-	public BoardGame() {
+	public BoardGame(int gamesInThisSesion) {
 
+		this.gamesInThisSesion = gamesInThisSesion;
 		boardGame = new Square[30][30];
 		move = false;
 		setGameOver(false);
@@ -504,6 +506,14 @@ public class BoardGame implements Runnable {
 
 	public void setUpdate(boolean update) {
 		this.update = update;
+	}
+
+	public int getGamesInThisSesion() {
+		return gamesInThisSesion;
+	}
+
+	public void setGamesInThisSesion(int gamesInThisSesion) {
+		this.gamesInThisSesion = gamesInThisSesion;
 	}
 	
 }

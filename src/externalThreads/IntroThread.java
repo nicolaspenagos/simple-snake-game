@@ -36,12 +36,15 @@ public class IntroThread extends Thread{
 		
 		try {
 			
-			boardGame.setBtitle(true);
-			sleep(3000);
-			boardGame.setBtitle(false);
-			boardGame.setBinstructions(true);
-			sleep(6000);
-			boardGame.setBinstructions(false);
+			if(boardGame.getGamesInThisSesion()==1) {
+				boardGame.setBtitle(true);
+				sleep(4500);
+				boardGame.setBtitle(false);
+				boardGame.setBinstructions(true);
+				sleep(6000);
+				boardGame.setBinstructions(false);
+			}
+			
 			boardGame.setB3(true);
 			sleep(1000);
 			boardGame.setB3(false);
