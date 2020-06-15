@@ -3,6 +3,7 @@ As a hobby, I present a simple implementation of the classic Snake video game in
 
 ![](readmeImages/Snake-01.jpg)
 
+![SnakeGameGif](https://user-images.githubusercontent.com/47872252/84618137-e051b500-ae96-11ea-8acd-587c15e5745e.gif)
 
 The main objective of the game is very simple, you have to eat as many enemies in the shortest time possible. Your best record will always be saved. The controls are very basic, use A, W, S, D or the arrows to move, press space if you want to increase the speed.
 
