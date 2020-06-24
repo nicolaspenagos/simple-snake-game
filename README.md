@@ -8,7 +8,7 @@ The main objective of the game is very simple, you have to eat as many enemies i
 ![20200614_234443](https://user-images.githubusercontent.com/47872252/84618920-39224d00-ae99-11ea-8f26-f988c147e148.gif)
 
 ## Important Information 
-For the implementation of this project, I have used Proccessing technology, for this reason, I will ask you to manually add the external JAR. Below you will find the instructions to do so using Eclipse.
+For the implementation of this project, I have used Proccessing technology, for this reason, I will ask you to manually add the external JAR. Below you will find the instructions to do so using Eclipse:
 
 ![](readmeImages/Core_jar_Tuto-01.jpg)
 
